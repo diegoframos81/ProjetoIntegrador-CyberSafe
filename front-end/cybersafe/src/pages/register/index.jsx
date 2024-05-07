@@ -10,17 +10,17 @@ const Register = () => {
     
     return (
         <LoginBox>
-        <ContainerLeft>
-            <Logo/>
-            <h1>Cadastre-se</h1>
-            <p> Cyberbullying! </p>
-            <p> É hora de você deletar sua ignorância.</p>
-            <p> Bullying on-line. Resultado off-line.</p>
-        </ContainerLeft>
+            <ContainerLeft>
+                <Logo/>
+                <h1>Cadastre-se</h1>
+                <p> Cyberbullying! </p>
+                <p> É hora de você deletar sua ignorância.</p>
+                <p> Bullying on-line. Resultado off-line.</p>
+            </ContainerLeft>
 
-        <FormBox>
-            <Form/>
-        </FormBox>
+            <FormBox>
+                <Form/>
+            </FormBox>
         </LoginBox>
     );
 };

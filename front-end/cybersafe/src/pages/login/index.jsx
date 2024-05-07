@@ -23,7 +23,7 @@ const Login = () => {
             <Input type="email" placeholder="E-mail" />
             <Input type="password" placeholder="Senha" />
             <ForgotPassword href="#">Esqueceu a senha?</ForgotPassword>
-            <Button text="Acessar conta" onClick={() => { {navigate("/")} }} type="login" />
+            <Button text="Acessar conta" onClick={() => { {navigate("/home")} }} type="login" />
             <Button text="Criar Conta" onClick={() => { {navigate("/Register")} }} type="create" />
         </FormBox>
         </LoginBox>

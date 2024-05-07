@@ -1,5 +1,6 @@
 import Register from "../pages/register/index"
 import Login from "../pages/login/index"
+import Home from "../pages/cardHome/index"
 import { Routes, Route } from "react-router-dom"
 
 
@@ -10,7 +11,8 @@ export const RoutesApp = () =>{
         
             <Routes>
                     <Route path="/" element={<Login />}/>
-                    <Route path="/Register" element={<Register />}/>
+                    <Route path="/register" element={<Register />}/>
+                    <Route path="/home" element={<Home />}/>
             </Routes>
         </>
     
