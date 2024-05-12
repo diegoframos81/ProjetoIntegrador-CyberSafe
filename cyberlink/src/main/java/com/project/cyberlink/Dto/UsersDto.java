@@ -23,7 +23,16 @@ public class UsersDto {
   
     private Date DtUpdated;
 
-
+    private int TypeUser;
+    
+    public int getTypeUser() {
+    	return TypeUser;
+    }
+    
+    public void setTypeUser(int typeUser) {
+    	TypeUser = typeUser;
+    }
+    
 	public String getEmail() {
 		return Email;
 	}
