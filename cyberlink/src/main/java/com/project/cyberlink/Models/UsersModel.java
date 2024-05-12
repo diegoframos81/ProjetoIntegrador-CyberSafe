@@ -19,7 +19,7 @@ public class UsersModel {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
     private Long Id;
 
     @Column(nullable = true, unique = true)
@@ -43,12 +43,11 @@ public class UsersModel {
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
     private Date DtUpdated;
 
+    @Column(nullable = true)
+    private EnumTypeUser TypeUser;
+    
 	public Long getId() {
 		return Id;
-	}
-
-	public void setId(Long id) {
-		Id = id;
 	}
 
 	public String getEmail() {
@@ -102,5 +101,18 @@ public class UsersModel {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	public EnumTypeUser getTypeUser() {
+		return TypeUser;
+	}
     
+	public void setTypeUser(int typeUser) {
+		switch(typeUser) {
+			case 1: 
+				TypeUser = EnumTypeUser.EDUCATOR;
+				break;
+			case 2: 
+				TypeUser = EnumTypeUser.RESPONSIBLE;
+		}
+	}
 }
