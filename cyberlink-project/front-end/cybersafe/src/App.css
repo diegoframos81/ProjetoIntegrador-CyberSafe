@@ -12,16 +12,3 @@ body {
   background: var(--background);
   
 } 
-
-.hide { 
-  display: none;
-}
-
-
-.input-forms {
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
