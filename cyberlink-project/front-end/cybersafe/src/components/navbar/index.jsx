@@ -2,7 +2,6 @@ import LogoIcon from '../../assets/Logo/LogoCyberSafe-removebg-preview.png'
 import Sino from '../../assets/Image/Sino Notificação.svg'
 import Email from '../../assets/Image/Email.svg'
 import styled from 'styled-components';
-import { useNavigate } from "react-router-dom";
 
 
 const NavbarContainer = styled.nav`
@@ -11,6 +10,17 @@ const NavbarContainer = styled.nav`
   display: flex;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   align-items: center;
+  a {
+      
+      color: #fff;
+      text-decoration: none;
+      
+    }
+    a:hover {
+    color:#fff; 
+    text-decoration:none; 
+    cursor:pointer;  
+    }
 `;
 
 const NavbarBrand = styled.a`
@@ -23,7 +33,15 @@ const NavbarBrand = styled.a`
     text-decoration: none;
     font-size: 1rem;
     font-weight: bold;
-
+    a {
+      color: #fff;
+        text-decoration: none;
+    }
+    a:hover {
+    color:#fff; 
+    text-decoration:none; 
+    cursor:pointer;  
+}
     img {
         width: 10%;
     }
@@ -64,18 +82,17 @@ const NavbarLink = styled.a`
 `;
 
 const Navbar = () => {
-  const navigate = useNavigate();
   return (
     <NavbarContainer>
-      <NavbarBrand href="" onClick={() => { {navigate("/home")} }}><img src={LogoIcon} alt="logo" /><a>LRWD Soluções</a></NavbarBrand>
+      <NavbarBrand href="#"><img src={LogoIcon} alt="logo" /><a>LRWD Soluções</a></NavbarBrand>
       <Logo>CYBERSAFE</Logo>
 
       <DirNavBar>
-        <NavbarLink href="" onClick={() => { {navigate("/home")} }}>HOME</NavbarLink>
-        <NavbarLink href="" onClick={() => { {navigate("/frequencia")} }}>FREQUENCIA </NavbarLink>
-        <NavbarLink href="">SOBRE </NavbarLink>
-        <NavbarLink href=""><img src={Sino} alt="logo" /> </NavbarLink>
-        <NavbarLink href=""><img src={Email} alt="logo" /> </NavbarLink>
+        <NavbarLink href="#">HOME</NavbarLink>
+        <NavbarLink href="#">FREQUENCIA </NavbarLink>
+        <NavbarLink href="#">SOBRE </NavbarLink>
+        <NavbarLink href="#"><img src={Sino} alt="logo" /> </NavbarLink>
+        <NavbarLink href="#"><img src={Email} alt="logo" /> </NavbarLink>
       </DirNavBar>
     </NavbarContainer>
   );

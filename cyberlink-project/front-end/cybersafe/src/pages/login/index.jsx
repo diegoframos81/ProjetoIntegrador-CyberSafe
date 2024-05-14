@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import { useNavigate } from "react-router-dom";
 import Input from '../../components/form-login/inputs/index';
 import Button from '../../components/form-login/button/index';

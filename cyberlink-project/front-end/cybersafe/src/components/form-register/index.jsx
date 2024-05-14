@@ -8,6 +8,9 @@ export function Form() {
     return (
         <FormContainer>
 
+            <div id="alert-erro" style={{ width: "100%", height: "70px" }} className="alert alert-danger hide" role="alert">{returnMsg}</div>
+
+
             <Input placeholder="Nome" />
             <Input placeholder="E-mail" />
             <Input placeholder="Senha" />
