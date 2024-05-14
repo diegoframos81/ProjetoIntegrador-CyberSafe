@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const LoginBox = styled.div`
   width: 680px;
-  height: 320px;
+  height: 400px;
 
   margin: 0 auto;
   margin-top: 180px;
@@ -14,7 +14,7 @@ export const LoginBox = styled.div`
 
 export const FormBox = styled.div`
   width: 35%;
-  margin-top: -230px;
+  margin-top: -40%;
   margin-left: 25rem;
 `;
 
@@ -43,8 +43,8 @@ export const ContainerLeft = styled.div`
   h1 {
     color: #007bc0;
     margin-left: -30px;
-    margin-top: 20px;
-    margin-bottom: 40px;
+    
+    margin-bottom: 20px;
     margin-left: -3px;
   }
 `;

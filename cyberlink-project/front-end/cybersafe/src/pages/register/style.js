@@ -10,7 +10,7 @@ export const PageContainer = styled.div`
 
 export const LoginBox = styled.div`
   width: 680px;
-  height: 320px;
+  height: 470px;
  
   margin: 0 auto;
   margin-top: 180px;
@@ -21,7 +21,7 @@ export const LoginBox = styled.div`
 
 export const FormBox = styled.div`
 width: 35%;
-margin-top: -230px;
+margin-top: -23rem;
 margin-left: 26rem;
 
 `
@@ -31,7 +31,7 @@ export const ContainerLeft = styled.div`
   p{
     font-size: 12px;
     color: #004267;
-    text-align: left !important;;  
+    text-align: left !important;  
   }
   display: flex;
   flex-direction: column;
@@ -40,9 +40,7 @@ export const ContainerLeft = styled.div`
 
   h1{
     color: #007BC0;
-    margin-left: -30px;
-    margin-top: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 5rem;
     margin-left: -3px;
   }
 

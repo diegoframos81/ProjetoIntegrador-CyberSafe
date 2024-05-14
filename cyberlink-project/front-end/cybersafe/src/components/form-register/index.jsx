@@ -44,7 +44,7 @@ export function Form() {
 
     return (
         <FormContainer>
-            <div id="alert-erro" className="alert alert-danger hide" role="alert">{returnMsg}</div>
+            <div id="alert-erro" style={{ width: "100%", height: "70px" }} className="alert alert-danger hide" role="alert">{returnMsg}</div>
 
             <Input placeholder="Nome" value={nome} onChange={e => setNome(e.target.value)} />
             <Input placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)} />

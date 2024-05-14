@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const FormContainer = styled.form`
     max-width: 500px;
     margin: 0 auto;
-    margin-top: -17rem;
+    margin-top: -20rem;
     border-radius: 10px;
     
 `;
@@ -13,7 +13,7 @@ export const Input = styled.input`
     width: 100%;
     padding: 10px;
     margin: 5px 0;
-    border-radius: 5px;
+    border-radius: 5px;  
     border: 1px solid #ccc;
 `;
 

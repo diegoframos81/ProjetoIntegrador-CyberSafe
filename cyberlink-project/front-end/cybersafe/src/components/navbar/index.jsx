@@ -10,6 +10,17 @@ const NavbarContainer = styled.nav`
   display: flex;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   align-items: center;
+  a {
+      
+      color: #fff;
+      text-decoration: none;
+      
+    }
+    a:hover {
+    color:#fff; 
+    text-decoration:none; 
+    cursor:pointer;  
+    }
 `;
 
 const NavbarBrand = styled.a`
@@ -22,7 +33,15 @@ const NavbarBrand = styled.a`
     text-decoration: none;
     font-size: 1rem;
     font-weight: bold;
-
+    a {
+      color: #fff;
+        text-decoration: none;
+    }
+    a:hover {
+    color:#fff; 
+    text-decoration:none; 
+    cursor:pointer;  
+}
     img {
         width: 10%;
     }
