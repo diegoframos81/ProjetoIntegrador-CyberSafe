@@ -6,7 +6,7 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 
 am4core.useTheme(am4themes_animated);
 
-function GraficoFaltas() {
+function ChartComponent() {
   useEffect(() => {
     let chart = am4core.create("chartdiv", am4charts.XYChart);
     chart.padding(40, 40, 40, 40);
@@ -23,7 +23,7 @@ function GraficoFaltas() {
 
     let series = chart.series.push(new am4charts.ColumnSeries());
     series.dataFields.categoryY = "network";
-    series.dataFields.valueX = "FALTAS";
+    series.dataFields.valueX = "MÉDIA";
     series.tooltipText = "{valueX.value}"
     series.columns.template.strokeOpacity = 0;
     series.columns.template.column.cornerRadiusBottomRight = 5;
@@ -32,7 +32,7 @@ function GraficoFaltas() {
     let labelBullet = series.bullets.push(new am4charts.LabelBullet())
     labelBullet.label.horizontalCenter = "left";
     labelBullet.label.dx = 10;
-    labelBullet.label.text = "{values.valueX.workingValue.formatNumber('#as')}"; // Alterado aqui
+    labelBullet.label.text = "{values.valueX.workingValue.formatNumber('#.0as')}";
     labelBullet.locationX = 1;
 
     series.columns.template.adapter.add("fill", function(fill, target){
@@ -42,24 +42,12 @@ function GraficoFaltas() {
     categoryAxis.sortBySeries = series;
     chart.data = [
         {
-          "network": "Compiladores",
-          "FALTAS": 6 
+          "network": "Turma",
+          "MÉDIA": 8.0
         },
         {
-          "network": "IA",
-          "FALTAS": 4
-        },
-        {
-          "network": "Mobile",
-          "FALTAS": 2
-        },
-        {
-          "network": "Sistemas Multimidias",
-          "FALTAS": 4
-        },
-        {
-          "network": "Projeto Integrador",
-          "FALTAS": 8
+          "network": "Aluno",
+          "MÉDIA": 7.5
         },
        
       ]
@@ -70,8 +58,8 @@ function GraficoFaltas() {
   }, []);
 
   return (
-    <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
+    <div id="chartdiv" style={{ width: "50%", height: "300px" }}></div>
   );
 }
 
-export default GraficoFaltas;
+export default ChartComponent;
