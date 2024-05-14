@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Navbar from '../../components/navbar/index';
-
+import { useNavigate } from "react-router-dom";
 import PageLayout from './style';
 import CardContainer from '../../components/card-disciplinas/card-container/index';
 import Card from '../../components/card-disciplinas/card/index';
@@ -8,6 +8,8 @@ import Button from '../../components/card-disciplinas/button/index';
 
 
 function HomeLayout() {
+
+const navigate = useNavigate();
 
 const ContentInfo = styled.div`
     display: flex;
@@ -55,7 +57,7 @@ const Discipline = styled.h2`
                         <HorarioInfo>Horário da Aula: {info.horario}</HorarioInfo>
                     </ContentInfo>
                     <Discipline>Disciplina: {info.disciplina}</Discipline>
-                    <Button>Ver detalhes</Button>
+                    <Button onClick={() => navigate("/details")}>Ver detalhes</Button>
                     </Card>
                 ))}
                 </CardContainer>
