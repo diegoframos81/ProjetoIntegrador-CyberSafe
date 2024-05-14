@@ -5,7 +5,7 @@ const PageLayout = styled.div`
   justify-content: center;
   align-items: center;
   height: 80vh;
-  
+  background-color: #f0f0f0; // Cor de exemplo
 `;
 
 
