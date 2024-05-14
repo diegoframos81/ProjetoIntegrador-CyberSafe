@@ -14,7 +14,7 @@ export const LoginBox = styled.div`
 
 export const FormBox = styled.div`
   width: 35%;
-  margin-top: -230px;
+  margin-top: -50%;
   margin-left: 25rem;
 `;
 
