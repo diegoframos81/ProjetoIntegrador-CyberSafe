@@ -11,7 +11,8 @@ const BotaoAvaliacao = styled.section`
   border-color: #C7E4FF;
   border-radius: 10px;
   padding: 20px 50px; // Espaçamento interno
-  font-size: 16px; // Tamanho da fonte
+  font-size: 15px; // Tamanho da fonte
+  font-weight: bold;
   
 `;
 
