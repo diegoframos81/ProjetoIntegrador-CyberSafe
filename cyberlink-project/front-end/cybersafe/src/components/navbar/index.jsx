@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import LogoIcon from '../../assets/Logo/LogoCyberSafe-removebg-preview.png';
 import Sino from '../../assets/Image/Sino Notificação.svg';
@@ -79,25 +78,19 @@ const NavbarLink = styled.a`
   }
 `;
 
-const Navbar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const isAdmRoute = location.pathname === '/homeAdm' || location.pathname === '/tableCoef';
+const Navbar = ({ currentRoute }) => {
+  const isAdmRoute = currentRoute === '/homeAdm' || currentRoute === '/tableCoef';
 
   return (
     <NavbarContainer>
-      <NavbarBrand href="" onClick={() => navigate(isAdmRoute ? "/homeAdm" : "/home")}>
+      <NavbarBrand href={isAdmRoute ? "/homeAdm" : "/home"}>
         <img src={LogoIcon} alt="logo" />
         <a>LRWD Soluções</a>
       </NavbarBrand>
       <Logo>CYBERSAFE</Logo>
 
       <DirNavBar>
-        <NavbarLink href="" onClick={() => navigate(isAdmRoute ? "/homeAdm" : "/home")}>HOME</NavbarLink>
-        <NavbarLink href="" onClick={() => navigate(isAdmRoute ? "/tableCoef" : "/frequencia")}>
-          {isAdmRoute ? "COEFICIENTE" : "FREQUÊNCIA"}
-        </NavbarLink>
+        <NavbarLink href={isAdmRoute ? "/tableCoef" : "/home"}>{isAdmRoute ? "COEFICIENTE" : "FREQUÊNCIA"}</NavbarLink>
         <NavbarLink href="">SOBRE</NavbarLink>
         {!isAdmRoute && <NavbarLink href=""><img src={Sino} alt="notification" /></NavbarLink>}
         {!isAdmRoute && <NavbarLink href=""><img src={Email} alt="email" /></NavbarLink>}

@@ -1,130 +1,87 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import styled from 'styled-components';
+import StudentModal from './modal-student/index';
+import StudentTable from './table-student/index';
 
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 18px;
-  text-align: left;
-
-  thead {
-    background-color: #f2f2f2;
-  }
-
-  th, td {
-    padding: 12px;
-    border: 1px solid #ddd;
-  }
-
-  tbody tr:nth-of-type(even) {
-    background-color: #f9f9f9;
-  }
-
-  tbody tr:hover {
-    background-color: #f1f1f1;
-  }
+const AddButton = styled(Button)`
+  margin-bottom: 20px;
 `;
 
-const StyledButtonE = styled(Button)`
-  position: relative;
-  top: -6rem;
-  left: 57rem;
-`;
+function DataTable() {
+  const [show, setShow] = useState(false);
+  const [students, setStudents] = useState([]);
+  const [student, setStudent] = useState({ nome: '', idade: '', matricula: '', curso: '', responsavel: '' });
+  const [multiAdd, setMultiAdd] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
 
-const StyledButton = styled(Button)`
-  margin: 5px;
-`;
+  useEffect(() => {
+    axios.get('http://77.37.69.162:5173/students') // Alteração na URL
+      .then(response => setStudents(response.data))
+      .catch(error => console.error('Erro ao carregar os dados:', error));
+  }, []);
 
-const PaginationWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  gap: 20px;
-`;
-
-function StudentTable({ students, setStudents, handleEdit }) {
-  const [selectedStudents, setSelectedStudents] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [filter, setFilter] = useState('');
-  const studentsPerPage = 10;
-
-  const handleSelect = (index) => {
-    const newSelectedStudents = [...selectedStudents];
-    const selectedIndex = newSelectedStudents.indexOf(index); 
-    if (selectedIndex === -1) {
-      newSelectedStudents.push(index);
-    } else {
-      newSelectedStudents.splice(selectedIndex, 1);
-    }
-    setSelectedStudents(newSelectedStudents);
+  const handleClose = () => {
+    setShow(false);
+    setEditIndex(null);
+    setStudent({ nome: '', idade: '', matricula: '', curso: '', responsavel: '' });
   };
 
-  const handleDelete = () => {
-    selectedStudents.forEach(index => {
-      const student = students[index];
-      axios.delete(`http://localhost:5000/students/${student.id}`)
-        .then(() => {
-          setStudents(prevStudents => prevStudents.filter((_, i) => i !== index));
+  const handleShow = () => setShow(true);
+
+  const handleSave = () => {
+    if (editIndex !== null) {
+      const updatedStudent = students[editIndex];
+      axios.put(`http://77.37.69.162:5173/students/${updatedStudent.id}`, student) // Alteração na URL
+        .then(response => {
+          const newStudents = [...students];
+          newStudents[editIndex] = response.data;
+          setStudents(newStudents);
         })
-        .catch(error => console.error('Erro ao excluir o aluno:', error));
-    });
-    setSelectedStudents([]);
+        .catch(error => console.error('Erro ao editar o aluno:', error));
+    } else {
+      axios.post('http://77.37.69.162:5173/students', student) // Alteração na URL
+        .then(response => setStudents([...students, response.data]))
+        .catch(error => console.error('Erro ao adicionar o aluno:', error));
+    }
+    setStudent({ nome: '', idade: '', matricula: '', curso: '', responsavel: '' });
+    if (!multiAdd) {
+      handleClose();
+    }
   };
 
-  const filteredStudents = students.filter(student => student.nome.includes(filter));
-  const totalPages = Math.ceil(filteredStudents.length / studentsPerPage);
-  const displayedStudents = filteredStudents.slice((currentPage - 1) * studentsPerPage, currentPage * studentsPerPage);
+  const handleEdit = (index) => {
+    setStudent(students[index]);
+    setEditIndex(index);
+    handleShow();
+  };
 
   return (
-    <div>
-      <Form.Control type="text" placeholder="Filtrar por nome" value={filter} onChange={e => setFilter(e.target.value)} />
-      <StyledButtonE variant="danger" onClick={handleDelete}>
-        Excluir selecionados
-      </StyledButtonE>
-      <StyledTable>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Nome</th>
-            <th>Idade</th>
-            <th>Matricula</th>
-            <th>Curso</th>
-            <th>Responsável</th>
-            <th>Editar</th>
-          </tr>
-        </thead>
-        <tbody>
-          {displayedStudents.map((student, index) => (
-            <tr key={index}>
-              <td><input type="checkbox" checked={selectedStudents.includes(index)} onChange={() => handleSelect(index)} /></td>
-              <td>{student.nome}</td>
-              <td>{student.idade}</td>
-              <td>{student.matricula}</td>
-              <td>{student.curso}</td>
-              <td>{student.responsavel}</td>
-              <td><StyledButton variant="warning" onClick={() => handleEdit(index)}>Editar</StyledButton></td>
-            </tr>
-          ))}
-        </tbody>
-      </StyledTable>
-      <PaginationWrapper>
-        {[...Array(totalPages)].map((_, i) => (
-          <Button
-            key={i}
-            active={i + 1 === currentPage}
-            onClick={() => setCurrentPage(i + 1)}
-          >
-            {i + 1}
-          </Button>
-        ))}
-      </PaginationWrapper>
+    <div className="App">
+      <AddButton variant="primary" onClick={handleShow}>
+        + Alunos
+      </AddButton>
+
+      <StudentModal
+        show={show}
+        handleClose={handleClose}
+        handleSave={handleSave}
+        student={student}
+        setStudent={setStudent}
+        multiAdd={multiAdd}
+        setMultiAdd={setMultiAdd}
+      />
+
+      <StudentTable
+        students={students}
+        setStudents={setStudents}
+        handleEdit={handleEdit}
+      />
     </div>
   );
 }
 
-export default StudentTable;
+export default DataTable;
