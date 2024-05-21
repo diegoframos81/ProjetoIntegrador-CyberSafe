@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import styled from 'styled-components';
-import StudentModal from './modal-student/index';
-import StudentTable from './table-student/index';
+import StudentModal from '../modal-student/index';
+import StudentTable from '../table-student/index';
 
 const AddButton = styled(Button)`
   margin-bottom: 20px;
