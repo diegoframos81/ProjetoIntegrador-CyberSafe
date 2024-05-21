@@ -24,10 +24,10 @@ const Login = () => {
 
             if (user.TypeUser === '1') {
                 console.log('Navigating to /Home'); // Adicionando logs para depuração
-                navigate("/Home");
+                navigate("/home");
             } else if (user.TypeUser === '2') {
                 console.log('Navigating to /HomeAdm'); // Adicionando logs para depuração
-                navigate("/HomeAdm");
+                navigate("/homeAdm");
             }
         } else {
             $('#alert-erro').removeClass('hide');
