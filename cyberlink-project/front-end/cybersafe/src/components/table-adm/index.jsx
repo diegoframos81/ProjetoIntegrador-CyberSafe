@@ -1,8 +1,14 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
+import axios from 'axios';
+import styled from 'styled-components';
 import StudentModal from './modal-student/index';
 import StudentTable from './table-student/index';
+
+const AddButton = styled(Button)`
+  margin-bottom: 20px;
+`;
 
 function DataTable() {
   const [show, setShow] = useState(false);
@@ -11,20 +17,34 @@ function DataTable() {
   const [multiAdd, setMultiAdd] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
+  useEffect(() => {
+    axios.get('http://localhost:5000/students')
+      .then(response => setStudents(response.data))
+      .catch(error => console.error('Erro ao carregar os dados:', error));
+  }, []);
+
   const handleClose = () => {
     setShow(false);
     setEditIndex(null);
+    setStudent({ nome: '', idade: '', matricula: '', curso: '', responsavel: '' });
   };
+
   const handleShow = () => setShow(true);
 
   const handleSave = () => {
     if (editIndex !== null) {
-      const newStudents = [...students];
-      newStudents[editIndex] = student;
-      setStudents(newStudents);
-      setEditIndex(null);
+      const updatedStudent = students[editIndex];
+      axios.put(`http://localhost:5000/students/${updatedStudent.id}`, student)
+        .then(response => {
+          const newStudents = [...students];
+          newStudents[editIndex] = response.data;
+          setStudents(newStudents);
+        })
+        .catch(error => console.error('Erro ao editar o aluno:', error));
     } else {
-      setStudents([...students, student]);
+      axios.post('http://localhost:5000/students', student)
+        .then(response => setStudents([...students, response.data]))
+        .catch(error => console.error('Erro ao adicionar o aluno:', error));
     }
     setStudent({ nome: '', idade: '', matricula: '', curso: '', responsavel: '' });
     if (!multiAdd) {
@@ -40,9 +60,9 @@ function DataTable() {
 
   return (
     <div className="App">
-      <Button variant="primary" onClick={handleShow}>
+      <AddButton variant="primary" onClick={handleShow}>
         + Alunos
-      </Button>
+      </AddButton>
 
       <StudentModal
         show={show}

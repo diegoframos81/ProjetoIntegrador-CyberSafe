@@ -1,45 +1,44 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 import React, { useState } from 'react';
 import { Input, Select, Button, FormContainer } from './style';
 import { useNavigate } from "react-router-dom";
 
 export function Form() {
-
     const navigate = useNavigate();
     
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
-    const [tipo, setTipo] = useState(''); 
+    const [tipo, setTipo] = useState('1'); 
     const [returnMsg, setMsg] = useState('');
 
     const MakeJsonUserAdd = () => {
-
-        const userAdd = {
+        return {
             Name: nome,
             Email: email,
             Password: senha,
-            TypeUser: tipo,
-            confirmePassword: confirmarSenha,
+            TypeUser: tipo
         };
-
-        return userAdd;
     };
 
-    const HandleRegistro  = () => {
-        var userAdd = MakeJsonUserAdd();
-        if(userAdd.Password != userAdd.confirmePassword){
-            setMsg('Senhas divergentes. Por favor, verifique confirme a senha');
+    const HandleRegistro = () => {
+        const userAdd = MakeJsonUserAdd();
+        
+        if (senha !== confirmarSenha) {
+            setMsg('Senhas divergentes. Por favor, verifique e confirme a senha');
             $('#alert-erro').removeClass('hide');
-        }else{
-            axios.post('http://localhost:8080/InsertNewUser', userAdd).then(response => {
-                navigate("/");
-                $('#alert-erro').addClass('hide');
-            }).catch(error => { 
-                setMsg('Houve um erro ao cadastrar o usuário');
-                $('#alert-erro').removeClass('hide');
-            });
+            return;
         }
+
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        users.push(userAdd);
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        setMsg('');
+        $('#alert-erro').addClass('hide');
+        navigate("/");
     };
 
     return (
