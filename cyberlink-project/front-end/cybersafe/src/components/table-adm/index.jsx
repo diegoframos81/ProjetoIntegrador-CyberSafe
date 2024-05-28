@@ -61,7 +61,7 @@ function DataTable() {
 
   return (
     <div className="App">
-      <AddButton variant="primary" onClick={handleShow}>
+      <AddButton variant="btn btn-outline-primary" onClick={handleShow}>
         + Alunos
       </AddButton>
 

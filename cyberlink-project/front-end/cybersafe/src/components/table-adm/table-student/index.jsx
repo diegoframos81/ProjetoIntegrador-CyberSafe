@@ -100,7 +100,7 @@ function StudentTable({ students, setStudents, handleEdit }) {
   return (
     <div>
       <Form.Control type="text" placeholder="Filtrar por nome" value={filter} onChange={e => setFilter(e.target.value)} />
-      <StyledButtonE variant="danger" onClick={handleDelete}>
+      <StyledButtonE variant="btn btn-outline-danger" onClick={handleDelete}>
         Excluir selecionados
       </StyledButtonE>
       <StyledTable>
@@ -124,7 +124,7 @@ function StudentTable({ students, setStudents, handleEdit }) {
               <td>{student.matricula}</td>
               <td>{student.curso}</td>
               <td>{student.responsavel}</td>
-              <td><StyledButton variant="warning" onClick={() => handleEdit(index)}>Editar</StyledButton></td>
+              <td><StyledButton variant="btn btn-info" onClick={() => handleEdit(index)}>Editar</StyledButton></td>
             </tr>
           ))}
         </tbody>
