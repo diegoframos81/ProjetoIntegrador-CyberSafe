@@ -2,9 +2,9 @@
 /* eslint-disable no-undef */
 import { useNavigate } from "react-router-dom";
 import React, { useState } from 'react';
-import Button from '../../components/form-login/button/index';
+import Button from '../../components/form-login/button/index.jsx';
 import { LoginBox, FormBox, ForgotPassword, ContainerLeft } from './style';
-import { Logo } from '../../components/logo/index';
+import { Logo } from '../../components/logo/index.jsx';
 
 const Login = () => {
     const navigate = useNavigate();

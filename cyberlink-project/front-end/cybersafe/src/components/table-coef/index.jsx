@@ -1,77 +1,87 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+/* eslint-disable no-undef */
+import React, { useState, useEffect } from 'react';
+import { Button } from 'react-bootstrap';
+import axios from 'axios';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import CoefTable from './coef-table/index';
-import CoefModal from './coef-modal/index';
+import StudentModal from '../../../src/components/table-coef/coef-modal/index.jsx';
+import StudentTable from '../../../src/components/table-coef/coef-table/index.jsx';
 
-const PageWrapper = styled.div`
-  padding: 20px;
+const AddButton = styled(Button)`
+  margin-bottom: 20px;
 `;
 
-const initialStudent = { disciplina: 'Compiladores', participacao: '1', frequencia: '1' };
-
-const DataTableCoef = () => {
-  const [students, setStudents] = useState([
-    { disciplina: 'Compiladores', participacao: 5, frequencia: 5 },
-    { disciplina: 'Projeto Integrador', participacao: 4, frequencia: 5 },
-    { disciplina: 'Sistemas Multimidias', participacao: 3, frequencia: 4 },
-    { disciplina: 'Inteligencia Artificial', participacao: 5, frequencia: 4 },
-    { disciplina: 'Desenvolvimento Mobile', participacao: 2, frequencia: 3 },
-  ]);
+function DataTable() {
   const [show, setShow] = useState(false);
-  const [student, setStudent] = useState(initialStudent);
+  const [students, setStudents] = useState([]);
+  const [student, setStudent] = useState({ nome: '', idade: '', matricula: '', curso: '', responsavel: '' });
+  const [multiAdd, setMultiAdd] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_URL}/students`)
+      .then(response => setStudents(response.data))
+      .catch(error => console.error('Erro ao carregar os dados:', error));
+  }, []);
+
+  const handleClose = () => {
+    setShow(false);
+    setEditIndex(null);
+    setStudent({ nome: '', idade: '', matricula: '', curso: '', responsavel: '' });
+  };
 
   const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
 
   const handleSave = () => {
-    setStudents((prevStudents) =>
-      prevStudents.map((item) =>
-        item.disciplina === student.disciplina
-          ? {
-              ...item,
-              participacao: parseInt(student.participacao, 10),
-              frequencia: parseInt(student.frequencia, 10),
-            }
-          : item
-      )
-    );
-    setStudent(initialStudent);
-    handleClose();
+    if (editIndex !== null) {
+      const updatedStudent = { ...students[editIndex], ...student };
+      axios.put(`${process.env.REACT_APP_API_URL}/students/${updatedStudent.id}`, updatedStudent)
+        .then(response => {
+          const newStudents = [...students];
+          newStudents[editIndex] = response.data;
+          setStudents(newStudents);
+        })
+        .catch(error => console.error('Erro ao editar o aluno:', error));
+    } else {
+      axios.post(`${process.env.REACT_APP_API_URL}/students`, student)
+        .then(response => setStudents([...students, response.data]))
+        .catch(error => console.error('Erro ao adicionar o aluno:', error));
+    }
+    setStudent({ nome: '', idade: '', matricula: '', curso: '', responsavel: '' });
+    if (!multiAdd) {
+      handleClose();
+    }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setStudent({ ...student, [name]: value });
-  };
-
-  const calculateAverage = (key) => {
-    const total = students.reduce((acc, item) => acc + item[key], 0);
-    return Math.round(total / students.length);
-  };
-
-  const navigateToCardPage = () => {
-    const participacao = calculateAverage('participacao');
-    const frequencia = calculateAverage('frequencia');
-    navigate('/details', { state: { participacao, frequencia } });
+  const handleEdit = (index) => {
+    setStudent(students[index]);
+    setEditIndex(index);
+    handleShow();
   };
 
   return (
-    <PageWrapper>
-      <CoefTable data={students} onAdd={handleShow} />
-      <CoefModal
+    <div className="App">
+      <AddButton variant="primary" onClick={handleShow}>
+        + Alunos
+      </AddButton>
+
+      <StudentModal
         show={show}
         handleClose={handleClose}
         handleSave={handleSave}
         student={student}
-        handleChange={handleChange}
+        setStudent={setStudent}
+        multiAdd={multiAdd}
+        setMultiAdd={setMultiAdd}
       />
-      
-    </PageWrapper>
-  );
-};
 
-export default DataTableCoef;
+      <StudentTable
+        students={students}
+        setStudents={setStudents}
+        handleEdit={handleEdit}
+      />
+    </div>
+  );
+}
+
+export default DataTable;
