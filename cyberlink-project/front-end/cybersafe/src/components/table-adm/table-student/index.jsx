@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+/* eslint-disable no-undef */
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
@@ -69,7 +70,7 @@ function StudentTable({ students, setStudents, handleEdit }) {
   const handleDelete = () => {
     const studentsToDelete = selectedStudents.map(index => students[index]);
     const deletePromises = studentsToDelete.map(student =>
-      axios.delete(`http://localhost:5000/students/${student.id}`)
+      axios.delete(`${process.env.REACT_APP_API_URL}/students/${student.id}`)
     );
 
     Promise.all(deletePromises)
@@ -84,7 +85,7 @@ function StudentTable({ students, setStudents, handleEdit }) {
   const handleRowClick = (id, nome) => {
     navigate(`/tableCoef/${id}`);
     localStorage.setItem('nomeAluno', nome)
-  };  
+  };
 
   const filteredStudents = students.filter(student => student.nome.includes(filter));
   const totalPages = Math.ceil(filteredStudents.length / studentsPerPage);
