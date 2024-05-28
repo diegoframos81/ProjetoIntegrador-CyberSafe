@@ -17,6 +17,13 @@ const StyledTable = styled.table`
     background-color: #f2f2f2;
   }
 
+  td input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+  }
+  td {
+    cursor: pointer;
+  }
+
   th, td {
     padding: 12px;
     border: 1px solid #ddd;
