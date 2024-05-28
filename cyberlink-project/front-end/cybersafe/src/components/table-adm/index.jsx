@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
@@ -18,7 +19,7 @@ function DataTable() {
   const [editIndex, setEditIndex] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/students')
+    axios.get(`${process.env.REACT_APP_API_URL}/students`)
       .then(response => setStudents(response.data))
       .catch(error => console.error('Erro ao carregar os dados:', error));
   }, []);
@@ -34,7 +35,7 @@ function DataTable() {
   const handleSave = () => {
     if (editIndex !== null) {
       const updatedStudent = { ...students[editIndex], ...student };
-      axios.put(`http://localhost:5000/students/${updatedStudent.id}`, updatedStudent)
+      axios.put(`${process.env.REACT_APP_API_URL}/students/${updatedStudent.id}`, updatedStudent)
         .then(response => {
           const newStudents = [...students];
           newStudents[editIndex] = response.data;
@@ -42,7 +43,7 @@ function DataTable() {
         })
         .catch(error => console.error('Erro ao editar o aluno:', error));
     } else {
-      axios.post('http://localhost:5000/students', student)
+      axios.post(`${process.env.REACT_APP_API_URL}/students`, student)
         .then(response => setStudents([...students, response.data]))
         .catch(error => console.error('Erro ao adicionar o aluno:', error));
     }
