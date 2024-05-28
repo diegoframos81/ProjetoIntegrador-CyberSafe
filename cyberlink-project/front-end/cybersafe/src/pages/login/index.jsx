@@ -13,25 +13,31 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
+        console.log("Iniciando o processo de login...");
         const users = JSON.parse(localStorage.getItem('users')) || [];
         const user = users.find(u => u.Email === email && u.Password === password);
 
         if (user) {
-            $('#alert-success').removeClass('hide');
-            $('#alert-erro').addClass('hide');
-            
+            console.log("Usuário encontrado:", user);
+            document.getElementById('alert-success').classList.remove('hide');
+            document.getElementById('alert-erro').classList.add('hide');
+
             console.log(`User type: ${user.TypeUser}`); // Adicionando logs para depuração
 
+            // Save logged-in user info in sessionStorage
+            sessionStorage.setItem('loggedInUser', JSON.stringify(user));
+
             if (user.TypeUser === '1') {
-                console.log('Navigating to /Home'); // Adicionando logs para depuração
-                navigate("/Home");
+                console.log('Navigating to /home'); // Adicionando logs para depuração
+                navigate("/home");
             } else if (user.TypeUser === '2') {
-                console.log('Navigating to /HomeAdm'); // Adicionando logs para depuração
-                navigate("/HomeAdm");
+                console.log('Navigating to /homeAdm'); // Adicionando logs para depuração
+                navigate("/homeAdm");
             }
         } else {
-            $('#alert-erro').removeClass('hide');
-            $('#alert-success').addClass('hide');
+            console.log("Usuário não encontrado.");
+            document.getElementById('alert-erro').classList.remove('hide');
+            document.getElementById('alert-success').classList.add('hide');
         }
     };
 
@@ -54,7 +60,7 @@ const Login = () => {
 
                 <ForgotPassword href="#">Esqueceu a senha?</ForgotPassword>
                 <Button type="login" text="Acessar conta" onClick={handleLogin} />
-                <Button text="Criar Conta" onClick={() => navigate("/Register")} type="create" />
+                <Button text="Criar Conta" onClick={() => navigate("/register")} type="create" />
             </FormBox>
         </LoginBox>
     );

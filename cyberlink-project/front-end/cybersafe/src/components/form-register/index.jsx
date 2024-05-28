@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Input, Select, Button, FormContainer } from './style';
 import { useNavigate } from "react-router-dom";
 
-export function Form() {
+export function Register() {
     const navigate = useNavigate();
     
     const [nome, setNome] = useState('');
@@ -28,7 +28,7 @@ export function Form() {
         
         if (senha !== confirmarSenha) {
             setMsg('Senhas divergentes. Por favor, verifique e confirme a senha');
-            $('#alert-erro').removeClass('hide');
+            document.getElementById('alert-erro').classList.remove('hide');
             return;
         }
 
@@ -37,7 +37,9 @@ export function Form() {
         localStorage.setItem('users', JSON.stringify(users));
         
         setMsg('');
-        $('#alert-erro').addClass('hide');
+        document.getElementById('alert-erro').classList.add('hide');
+
+        // Navegar para a página de login após o registro
         navigate("/");
     };
 
@@ -57,3 +59,5 @@ export function Form() {
         </FormContainer>
     );
 }
+
+export default Register;

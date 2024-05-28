@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const StyledTable = styled.table`
   width: 100%;
@@ -52,10 +53,11 @@ function StudentTable({ students, setStudents, handleEdit }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState('');
   const studentsPerPage = 10;
+  const navigate = useNavigate();
 
   const handleSelect = (index) => {
     const newSelectedStudents = [...selectedStudents];
-    const selectedIndex = newSelectedStudents.indexOf(index); 
+    const selectedIndex = newSelectedStudents.indexOf(index);
     if (selectedIndex === -1) {
       newSelectedStudents.push(index);
     } else {
@@ -65,16 +67,24 @@ function StudentTable({ students, setStudents, handleEdit }) {
   };
 
   const handleDelete = () => {
-    selectedStudents.forEach(index => {
-      const student = students[index];
+    const studentsToDelete = selectedStudents.map(index => students[index]);
+    const deletePromises = studentsToDelete.map(student =>
       axios.delete(`http://localhost:5000/students/${student.id}`)
-        .then(() => {
-          setStudents(prevStudents => prevStudents.filter((_, i) => i !== index));
-        })
-        .catch(error => console.error('Erro ao excluir o aluno:', error));
-    });
-    setSelectedStudents([]);
+    );
+
+    Promise.all(deletePromises)
+      .then(() => {
+        const newStudents = students.filter((_, index) => !selectedStudents.includes(index));
+        setStudents(newStudents);
+        setSelectedStudents([]);
+      })
+      .catch(error => console.error('Erro ao excluir o aluno:', error));
   };
+
+  const handleRowClick = (id, nome) => {
+    navigate(`/tableCoef/${id}`);
+    localStorage.setItem('nomeAluno', nome)
+  };  
 
   const filteredStudents = students.filter(student => student.nome.includes(filter));
   const totalPages = Math.ceil(filteredStudents.length / studentsPerPage);
@@ -100,7 +110,7 @@ function StudentTable({ students, setStudents, handleEdit }) {
         </thead>
         <tbody>
           {displayedStudents.map((student, index) => (
-            <tr key={index}>
+            <tr key={index} onClick={() => handleRowClick(student.id, student.nome)}>
               <td><input type="checkbox" checked={selectedStudents.includes(index)} onChange={() => handleSelect(index)} /></td>
               <td>{student.nome}</td>
               <td>{student.idade}</td>

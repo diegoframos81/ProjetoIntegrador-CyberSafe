@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, matchPath } from "react-router-dom";
 import styled from 'styled-components';
 import LogoIcon from '../../assets/Logo/LogoCyberSafe-removebg-preview.png';
 import Sino from '../../assets/Image/Sino Notificação.svg';
@@ -83,7 +83,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isAdmRoute = location.pathname === '/homeAdm' || location.pathname === '/tableCoef';
+  const isAdmRoute = location.pathname === '/homeAdm' || matchPath("/tableCoef/:id", location.pathname);
 
   return (
     <NavbarContainer>
@@ -95,7 +95,7 @@ const Navbar = () => {
 
       <DirNavBar>
         <NavbarLink href="" onClick={() => navigate(isAdmRoute ? "/homeAdm" : "/home")}>HOME</NavbarLink>
-        <NavbarLink href="" onClick={() => navigate(isAdmRoute ? "/tableCoef" : "/frequencia")}>
+        <NavbarLink href="" onClick={() => navigate(isAdmRoute ? "/tableCoef/:id" : "/frequencia")}>
           {isAdmRoute ? "COEFICIENTE" : "FREQUÊNCIA"}
         </NavbarLink>
         <NavbarLink href="">SOBRE</NavbarLink>

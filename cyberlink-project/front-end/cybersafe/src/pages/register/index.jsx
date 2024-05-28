@@ -1,5 +1,5 @@
 
-import { Form }  from '../../components/form-register/index';
+import  Form   from '../../components/form-register/index';
 import { LoginBox, FormBox, ContainerLeft} from './style';
 import { Logo } from '../../components/logo/index';
 

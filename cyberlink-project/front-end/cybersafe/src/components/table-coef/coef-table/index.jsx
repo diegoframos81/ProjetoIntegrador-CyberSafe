@@ -1,9 +1,16 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-key */
-import React from 'react';
-import { useTable } from 'react-table';
-import styled from 'styled-components';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import CoefModal from '../coef-modal/index';
+import CardCoeficiente from '../../card-coef/index';
+import styled from 'styled-components';
+
+// eslint-disable-next-line react-refresh/only-export-components
+const ContentCard = styled.div`
+  position: relative;
+  top: 15rem;
+`
 
 const Styles = styled.div`
   padding: 1rem;
@@ -31,62 +38,93 @@ const Styles = styled.div`
   }
 `;
 
-const CoefTable = ({ data, onAdd }) => {
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: 'DISCIPLINAS',
-        accessor: 'disciplina',
-      },
-      {
-        Header: 'PARTICIPAÇÃO',
-        accessor: 'participacao',
-      },
-      {
-        Header: 'FREQUÊNCIA',
-        accessor: 'frequencia',
-      },
-    ],
-    []
-  );
+const CoefTable = () => {
+  const location = useLocation();
+  const { id } = useParams();
+  const [nome, setNome ] = useState('')
+  const [data, setData] = useState([
+    { disciplina: 'Compiladores', participacao: 5, frequencia: 5 }, 
+    { disciplina: 'Projeto Integrador', participacao: 4, frequencia: 5 },
+    { disciplina: 'Sistemas Multimídia', participacao: 3, frequencia: 4 },
+    { disciplina: 'Inteligência Artificial', participacao: 5, frequencia: 4 },
+    { disciplina: 'Desenvolvimento Mobile', participacao: 2, frequencia: 3 },
+  ]);
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data });
+  const [participacaoMedia, setParticipacaoMedia] = useState(0);
+  const [frequenciaMedia, setFrequenciaMedia] = useState(0);
+  const [modalShow, setModalShow] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState({
+    disciplina: 'Compiladores',
+    participacao: 1,
+    frequencia: 1,
+  });
+
+  useEffect(() => {
+    const participacaoTotal = data.reduce((acc, item) => acc + item.participacao, 0);
+    const frequenciaTotal = data.reduce((acc, item) => acc + item.frequencia, 0);
+    const participacaoMedia = participacaoTotal / data.length;
+    const frequenciaMedia = frequenciaTotal / data.length;
+    setParticipacaoMedia(participacaoMedia);
+    setFrequenciaMedia(frequenciaMedia);
+    setNome(localStorage.getItem('nomeAluno'))
+  }, [data]);
+
+  const handleChange = (e) => {
+    setSelectedStudent({
+      ...selectedStudent,
+      [e.target.nome]: e.target.value,
+    });
+  };
+
+  const handleSave = () => {
+    setData((prevData) =>
+      prevData.map((item) =>
+        item.disciplina === selectedStudent.disciplina
+          ? {
+              ...item,
+              participacao: parseInt(selectedStudent.participacao, 10),
+              frequencia: parseInt(selectedStudent.frequencia, 10),
+            }
+          : item
+      )
+    );
+    setModalShow(false);
+  };
 
   return (
     <Styles>
-      <h2>Aluno: Joao Silva</h2>
-      <table {...getTableProps()}>
+      <h2>Aluno: {nome}</h2>
+      <table>
         <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-              ))}
+          <tr>
+            <th>DISCIPLINAS</th>
+            <th>PARTICIPAÇÃO</th>
+            <th>FREQUÊNCIA</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item, index) => (
+            <tr key={index}>
+              <td>{item.disciplina}</td>
+              <td>{item.participacao}</td>
+              <td>{item.frequencia}</td>
             </tr>
           ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map(row => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => (
-                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                ))}
-              </tr>
-            );
-          })}
         </tbody>
       </table>
-      <Button variant="primary" onClick={onAdd} style={{ marginTop: '20px' }}>
+      <Button variant="primary" onClick={() => setModalShow(true)} style={{ marginTop: '20px' }}>
         Adicionar Informação
       </Button>
+      <CoefModal
+        show={modalShow}
+        handleClose={() => setModalShow(false)}
+        handleSave={handleSave}
+        student={selectedStudent}
+        handleChange={handleChange}
+      />
+      <ContentCard>
+        <CardCoeficiente participacao={participacaoMedia} frequencia={frequenciaMedia} />
+      </ContentCard>
     </Styles>
   );
 };

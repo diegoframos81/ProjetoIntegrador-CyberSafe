@@ -33,8 +33,8 @@ function DataTable() {
 
   const handleSave = () => {
     if (editIndex !== null) {
-      const updatedStudent = students[editIndex];
-      axios.put(`http://localhost:5000/students/${updatedStudent.id}`, student)
+      const updatedStudent = { ...students[editIndex], ...student };
+      axios.put(`http://localhost:5000/students/${updatedStudent.id}`, updatedStudent)
         .then(response => {
           const newStudents = [...students];
           newStudents[editIndex] = response.data;

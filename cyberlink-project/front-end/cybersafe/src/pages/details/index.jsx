@@ -1,4 +1,4 @@
-import { DetailsPage } from "../../layout/page-details"
+import  DetailsPage  from "../../layout/page-details"
 
 
 

@@ -20,22 +20,22 @@ function StudentModal({ show, handleClose, handleSave, student, setStudent, mult
             <Form.Control type="text" placeholder="Nome" name="nome" value={student.nome} onChange={handleChange} />
           </Form.Group>
 
-          <Form.Group controlId="formNome">
+          <Form.Group controlId="formIdade">
             <Form.Label>Idade</Form.Label>
             <Form.Control type="text" placeholder="Idade" name="idade" value={student.idade} onChange={handleChange} />
           </Form.Group>
 
-          <Form.Group controlId="formNome">
+          <Form.Group controlId="formMatricula">
             <Form.Label>Matrícula</Form.Label>
             <Form.Control type="text" placeholder="Matricula" name="matricula" value={student.matricula} onChange={handleChange} />
           </Form.Group>
 
-          <Form.Group controlId="formNome">
+          <Form.Group controlId="formCurso">
             <Form.Label>Curso</Form.Label>
             <Form.Control type="text" placeholder="Curso" name="curso" value={student.curso} onChange={handleChange} />
           </Form.Group>
 
-          <Form.Group controlId="formNome">
+          <Form.Group controlId="formResponsavel">
             <Form.Label>Responsável</Form.Label>
             <Form.Control type="text" placeholder="Responsável" name="responsavel" value={student.responsavel} onChange={handleChange} />
           </Form.Group>

@@ -1,27 +1,34 @@
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import React from 'react';
 import styled from 'styled-components';
 
 const BotaoAvaliacao = styled.section`
   position: relative;
-  top: -10rem;
-  left: 47.3rem;
-  width: 10rem;
-  background-color: #C7E4FF; // Fundo azul claro
-  color: #1E1E1E; // Texto preto
-  border-color: #C7E4FF;
+  top: -200px;
+  width: 15rem;
+  background-color: #c7e4ff; // Fundo azul claro
+  color: #1e1e1e; // Texto preto
+  border-color: #c7e4ff;
   border-radius: 10px;
   padding: 20px 50px; // Espaçamento interno
   font-size: 15px; // Tamanho da fonte
   font-weight: bold;
-  
+  margin: 10px;
 `;
 
-const CardCoeficiente = () => {
+const CardCoeficiente = ({ participacao = 'N/A', frequencia = 'N/A' }) => {
+  console.log(`Props - Participacao: ${participacao}, Frequencia: ${frequencia}`); // Debugging log
   return (
-    <BotaoAvaliacao>
-      4 - Bom
-    </BotaoAvaliacao>
+    <div>
+      <BotaoAvaliacao>
+        Participação: {participacao}
+      </BotaoAvaliacao>
+      <BotaoAvaliacao>
+        Frequência: {frequencia}
+      </BotaoAvaliacao>
+    </div>
   );
-}
+};
 
 export default CardCoeficiente;

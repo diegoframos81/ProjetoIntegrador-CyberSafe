@@ -1,16 +1,12 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import { App } from './App'
+/* eslint-disable no-unused-vars */
+import React from 'react';
+import { createRoot } from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { App } from './App';
 
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      
-        <App />
-        
-      
-    </BrowserRouter>
-  </React.StrictMode>,
-)
+const root = createRoot(document.getElementById('root'));
+root.render(
+  <Router>
+    <App />
+  </Router>
+);
