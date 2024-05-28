@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import styled from 'styled-components';
-import StudentModal from '../../../src/components/table-adm/modal-student/index.jsx'
-import StudentTable from '../../../src/components/table-adm/table-student/index.jsx';
+import StudentModal from './modal-student/index';
+import StudentTable from './table-student/index';
 
 const AddButton = styled(Button)`
   margin-bottom: 20px;
@@ -19,7 +19,7 @@ function DataTable() {
   const [editIndex, setEditIndex] = useState(null);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/students`)
+    axios.get(`${import.meta.env.VITE_API_URL}/students`)
       .then(response => setStudents(response.data))
       .catch(error => console.error('Erro ao carregar os dados:', error));
   }, []);
@@ -35,7 +35,7 @@ function DataTable() {
   const handleSave = () => {
     if (editIndex !== null) {
       const updatedStudent = { ...students[editIndex], ...student };
-      axios.put(`${process.env.REACT_APP_API_URL}/students/${updatedStudent.id}`, updatedStudent)
+      axios.put(`${import.meta.env.VITE_API_URL}/students/${updatedStudent.id}`, updatedStudent)
         .then(response => {
           const newStudents = [...students];
           newStudents[editIndex] = response.data;
@@ -43,7 +43,7 @@ function DataTable() {
         })
         .catch(error => console.error('Erro ao editar o aluno:', error));
     } else {
-      axios.post(`${process.env.REACT_APP_API_URL}/students`, student)
+      axios.post(`${import.meta.env.VITE_API_URL}/students`, student)
         .then(response => setStudents([...students, response.data]))
         .catch(error => console.error('Erro ao adicionar o aluno:', error));
     }

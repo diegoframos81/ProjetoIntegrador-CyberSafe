@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-/* eslint-disable no-undef */
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
@@ -70,7 +69,7 @@ function StudentTable({ students, setStudents, handleEdit }) {
   const handleDelete = () => {
     const studentsToDelete = selectedStudents.map(index => students[index]);
     const deletePromises = studentsToDelete.map(student =>
-      axios.delete(`${process.env.REACT_APP_API_URL}/students/${student.id}`)
+      axios.delete(`${import.meta.env.VITE_API_URL}/students/${student.id}`)
     );
 
     Promise.all(deletePromises)
