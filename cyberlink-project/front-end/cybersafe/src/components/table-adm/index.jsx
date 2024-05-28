@@ -19,7 +19,7 @@ function DataTable() {
   const [editIndex, setEditIndex] = useState(null);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/students`)
+    axios.get('http://77.37.69.162:5173/students')
       .then(response => setStudents(response.data))
       .catch(error => console.error('Erro ao carregar os dados:', error));
   }, []);
@@ -35,7 +35,7 @@ function DataTable() {
   const handleSave = () => {
     if (editIndex !== null) {
       const updatedStudent = { ...students[editIndex], ...student };
-      axios.put(`${import.meta.env.VITE_API_URL}/students/${updatedStudent.id}`, updatedStudent)
+      axios.put(`http://77.37.69.162:5173/students/${updatedStudent.id}`, updatedStudent)
         .then(response => {
           const newStudents = [...students];
           newStudents[editIndex] = response.data;
@@ -43,7 +43,7 @@ function DataTable() {
         })
         .catch(error => console.error('Erro ao editar o aluno:', error));
     } else {
-      axios.post(`${import.meta.env.VITE_API_URL}/students`, student)
+      axios.post('http://77.37.69.162:5173/students', student)
         .then(response => setStudents([...students, response.data]))
         .catch(error => console.error('Erro ao adicionar o aluno:', error));
     }

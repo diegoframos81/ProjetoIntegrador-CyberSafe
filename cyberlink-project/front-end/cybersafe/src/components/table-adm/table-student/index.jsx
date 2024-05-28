@@ -76,7 +76,7 @@ function StudentTable({ students, setStudents, handleEdit }) {
   const handleDelete = () => {
     const studentsToDelete = selectedStudents.map(index => students[index]);
     const deletePromises = studentsToDelete.map(student =>
-      axios.delete(`${import.meta.env.VITE_API_URL}/students/${student.id}`)
+      axios.delete(`http://77.37.69.162:5173/students/${student.id}`)
     );
 
     Promise.all(deletePromises)
