@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import CoefTable from './coef-table/index';
 import CoefModal from './coef-modal/index';
 
@@ -9,20 +10,20 @@ const PageWrapper = styled.div`
   padding: 20px;
 `;
 
-const initialStudent = { disciplina: 'Compiladores', participacao: '1', frequencia: '1' };
-
 const DataTableCoef = () => {
-  const [students, setStudents] = useState([
-    { disciplina: 'Compiladores', participacao: 5, frequencia: 5 },
-    { disciplina: 'Projeto Integrador', participacao: 4, frequencia: 5 },
-    { disciplina: 'Sistemas Multimidias', participacao: 3, frequencia: 4 },
-    { disciplina: 'Inteligencia Artificial', participacao: 5, frequencia: 4 },
-    { disciplina: 'Desenvolvimento Mobile', participacao: 2, frequencia: 3 },
-  ]);
+  const { id } = useParams(); // pegar o id da URL
+  const [students, setStudents] = useState([]);
   const [show, setShow] = useState(false);
-  const [student, setStudent] = useState(initialStudent);
+  const [student, setStudent] = useState(null);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    // Carregar dados do estudante com base no ID da URL
+    axios.get(`http://77.37.69.162:5173/students/${id}`)
+      .then(response => {
+        setStudent(response.data);
+      })
+      .catch(error => console.error('Erro ao carregar os dados:', error));
+  }, [id]);
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -39,7 +40,7 @@ const DataTableCoef = () => {
           : item
       )
     );
-    setStudent(initialStudent);
+    setStudent(null);
     handleClose();
   };
 
@@ -48,16 +49,9 @@ const DataTableCoef = () => {
     setStudent({ ...student, [name]: value });
   };
 
-  const calculateAverage = (key) => {
-    const total = students.reduce((acc, item) => acc + item[key], 0);
-    return Math.round(total / students.length);
-  };
-
-  const navigateToCardPage = () => {
-    const participacao = calculateAverage('participacao');
-    const frequencia = calculateAverage('frequencia');
-    navigate('/details', { state: { participacao, frequencia } });
-  };
+  if (!student) {
+    return <div>Loading...</div>; // ou qualquer outro carregamento enquanto os dados estão sendo buscados
+  }
 
   return (
     <PageWrapper>
@@ -69,7 +63,6 @@ const DataTableCoef = () => {
         student={student}
         handleChange={handleChange}
       />
-      
     </PageWrapper>
   );
 };
