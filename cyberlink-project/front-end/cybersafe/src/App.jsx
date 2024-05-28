@@ -1,12 +1,10 @@
 /* eslint-disable no-unused-vars */
-import './App.css';
+import './App.css'
 import React from 'react';
-import  RoutesApp  from './routes/app-route';
+import RoutesApp from './routes/app-route';
 
-export const App = () => {
-  return (
-    <>
-      <RoutesApp />
-    </>
-  );
-}
+const App = () => {
+  return <RoutesApp />;
+};
+
+export default App;
