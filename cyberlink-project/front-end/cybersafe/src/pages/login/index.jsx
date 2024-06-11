@@ -3,7 +3,7 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState } from 'react';
 import Button from '../../components/form-login/button/index';
-import { LoginBox, FormBox, ForgotPassword, ContainerLeft } from './style';
+import { LoginBox, FormBox, ForgotPassword, ContainerLeft, LogoContainer } from './style';
 import { Logo } from '../../components/logo/index';
 
 const Login = () => {
@@ -42,27 +42,32 @@ const Login = () => {
     };
 
     return (
-        <LoginBox>
-            <ContainerLeft>
-                <Logo />
-                <h1>Fazer Login</h1>
-                <p> Cyberbullying! </p>
-                <p> É hora de você deletar sua ignorância.</p>
-                <p> Bullying on-line. Resultado off-line.</p>
-            </ContainerLeft>
+        <div className="container">
+            <LoginBox className="row">
+                <ContainerLeft className="col-lg-6 col-md-6 d-none d-md-flex flex-column">
+                    <Logo />
+                    <h1>Fazer Login</h1>
+                    <p> Cyberbullying! </p>
+                    <p> É hora de você deletar sua ignorância.</p>
+                    <p> Bullying on-line. Resultado off-line.</p>
+                </ContainerLeft>
 
-            <FormBox>
-                <div id="alert-erro" className="alert alert-danger hide" role="alert">Email ou senha incorretos !</div>
-                <div id="alert-success" className="alert alert-success hide" role="alert">Deu bom !</div>
+                <FormBox className="col-lg-6 col-md-6 col-12">
+                    <LogoContainer>
+                        <Logo />
+                    </LogoContainer>
+                    <div id="alert-erro" className="alert alert-danger hide" role="alert">Email ou senha incorretos !</div>
+                    <div id="alert-success" className="alert alert-success hide" role="alert">Deu bom !</div>
 
-                <input type="email" className="input-forms" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)} />
-                <input type="password" className="input-forms" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} />
+                    <input type="email" className="form-control mb-3" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)} />
+                    <input type="password" className="form-control mb-3" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} />
 
-                <ForgotPassword href="#">Esqueceu a senha?</ForgotPassword>
-                <Button type="login" text="Acessar conta" onClick={handleLogin} />
-                <Button text="Criar Conta" onClick={() => navigate("/register")} type="create" />
-            </FormBox>
-        </LoginBox>
+                    <ForgotPassword href="#" className="d-block text-right">Esqueceu a senha?</ForgotPassword>
+                    <Button type="login" text="Acessar conta" onClick={handleLogin} className="btn btn-primary w-100 mb-2" />
+                    <Button text="Criar Conta" onClick={() => navigate("/register")} type="create" className="btn btn-secondary w-100" />
+                </FormBox>
+            </LoginBox>
+        </div>
     );
 };
 

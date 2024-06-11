@@ -5,21 +5,33 @@ import styled from 'styled-components';
 import LogoIcon from '../../assets/Logo/LogoCyberSafe-removebg-preview.png';
 import Sino from '../../assets/Image/Sino Notificação.svg';
 import Email from '../../assets/Image/Email.svg';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const NavbarContainer = styled.nav`
   background-color: #637B90;
   padding-bottom: 0.3rem;
-  display: flex;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   align-items: center;
+
   a {
     color: #fff;
     text-decoration: none;
   }
+
   a:hover {
     color: #fff; 
     text-decoration: none; 
     cursor: pointer;  
+  }
+`;
+
+const ContainerFluid = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: 768px) {
+    margin-left: 1rem; /* Add padding for mobile devices */
   }
 `;
 
@@ -27,45 +39,48 @@ const NavbarBrand = styled.a`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: -8rem;
   width: 30%;
   color: #fff;
   text-decoration: none;
   font-size: 1rem;
   font-weight: bold;
+
   a {
     color: #fff;
     text-decoration: none;
   }
+
   a:hover {
     color: #fff; 
     text-decoration: none; 
     cursor: pointer;  
   }
+
   img {
-    width: 10%;
+    width: 40px;
+  }
+
+  @media (max-width: 768px) {
+    img {
+      margin-left: 1rem; /* Increase margin for mobile devices */
+    }
   }
 `;
 
 const Logo = styled.h1`
   font-size: 24px;
   color: #fff;
-  margin-left: -8rem;
 `;
 
 const DirNavBar = styled.div`
-  justify-content: space-evenly;
   display: flex;
   align-items: center;
-  width: 30%;
-  margin-left: 43rem;
 `;
 
 const NavbarLink = styled.a`
   color: #fff;
-  justify-content: space-evenly;
   text-decoration: none;
-  margin-left: 5rem;
+  margin-left: 1rem;
   font-size: 1rem;
   transition: color 0.3s ease;
 
@@ -74,8 +89,8 @@ const NavbarLink = styled.a`
   }
 
   img {
-    width: 3rem;
-    height: 3rem;
+    width: 2rem;
+    height: 2rem;
   }
 `;
 
@@ -86,22 +101,28 @@ const Navbar = () => {
   const isAdmRoute = location.pathname === '/homeAdm' || matchPath("/tableCoef/:id", location.pathname);
 
   return (
-    <NavbarContainer>
-      <NavbarBrand href="" onClick={() => navigate(isAdmRoute ? "/homeAdm" : "/home")}>
-        <img src={LogoIcon} alt="logo" />
-        <a>LRWD Soluções</a>
-      </NavbarBrand>
-      <Logo>CYBERSAFE</Logo>
-
-      <DirNavBar>
-        <NavbarLink href="" onClick={() => navigate(isAdmRoute ? "/homeAdm" : "/home")}>HOME</NavbarLink>
-        <NavbarLink href="" onClick={() => navigate(isAdmRoute ? "/tableCoef/:id" : "/frequencia")}>
-          {isAdmRoute ? "COEFICIENTE" : "FREQUÊNCIA"}
-        </NavbarLink>
-        <NavbarLink href="">SOBRE</NavbarLink>
-        {!isAdmRoute && <NavbarLink href=""><img src={Sino} alt="notification" /></NavbarLink>}
-        {!isAdmRoute && <NavbarLink href=""><img src={Email} alt="email" /></NavbarLink>}
-      </DirNavBar>
+    <NavbarContainer className="navbar navbar-expand-lg">
+      <ContainerFluid className="container-fluid">
+        <NavbarBrand href="" onClick={() => navigate(isAdmRoute ? "/homeAdm" : "/home")} className="navbar-brand">
+          <img src={LogoIcon} alt="logo" />
+          <a>LRWD Soluções</a>
+        </NavbarBrand>
+        <Logo className="d-none d-lg-block">CYBERSAFE</Logo>
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <DirNavBar className="navbar-nav ms-auto">
+            <NavbarLink href="" onClick={() => navigate(isAdmRoute ? "/homeAdm" : "/home")} className="nav-link">HOME</NavbarLink>
+            <NavbarLink href="" onClick={() => navigate(isAdmRoute ? "/tableCoef/:id" : "/frequencia")} className="nav-link">
+              {isAdmRoute ? "COEFICIENTE" : "FREQUÊNCIA"}
+            </NavbarLink>
+            <NavbarLink href="" className="nav-link">SOBRE</NavbarLink>
+            {!isAdmRoute && <NavbarLink href="" className="nav-link"><img src={Sino} alt="notification" /></NavbarLink>}
+            {!isAdmRoute && <NavbarLink href="" className="nav-link"><img src={Email} alt="email" /></NavbarLink>}
+          </DirNavBar>
+        </div>
+      </ContainerFluid>
     </NavbarContainer>
   );
 }

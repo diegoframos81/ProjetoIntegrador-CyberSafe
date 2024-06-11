@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 
 const PageLayout = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
-  background-color: #f0f0f0; // Cor de exemplo
+  width: 100%;
+  padding: 20px;
+  background-color: #f8f9fa; // Cor de exemplo
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
 `;
-
 
 export default PageLayout;
