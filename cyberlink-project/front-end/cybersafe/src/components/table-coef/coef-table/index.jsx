@@ -1,47 +1,12 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-import CoefModal from '../coef-modal/index';
+import { Button, Table, Modal, Form } from 'react-bootstrap';
 import CardCoeficiente from '../../card-coef/index';
-import styled from 'styled-components';
-
-// eslint-disable-next-line react-refresh/only-export-components
-const ContentCard = styled.div`
-  position: relative;
-  top: 15rem;
-`
-
-const Styles = styled.div`
-  padding: 1rem;
-  table {
-    width: 100%;
-    border-spacing: 0;
-    border: 1px solid black;
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
-`;
 
 const CoefTable = () => {
   const location = useLocation();
   const { id } = useParams();
-  const [nome, setNome ] = useState('')
+  const [nome, setNome] = useState('');
   const [data, setData] = useState([
     { disciplina: 'Compiladores', participacao: 5, frequencia: 5 }, 
     { disciplina: 'Projeto Integrador', participacao: 4, frequencia: 5 },
@@ -49,7 +14,6 @@ const CoefTable = () => {
     { disciplina: 'Inteligência Artificial', participacao: 5, frequencia: 4 },
     { disciplina: 'Desenvolvimento Mobile', participacao: 2, frequencia: 3 },
   ]);
-
   const [participacaoMedia, setParticipacaoMedia] = useState(0);
   const [frequenciaMedia, setFrequenciaMedia] = useState(0);
   const [modalShow, setModalShow] = useState(false);
@@ -66,13 +30,13 @@ const CoefTable = () => {
     const frequenciaMedia = frequenciaTotal / data.length;
     setParticipacaoMedia(participacaoMedia);
     setFrequenciaMedia(frequenciaMedia);
-    setNome(localStorage.getItem('nomeAluno'))
+    setNome(localStorage.getItem('nomeAluno'));
   }, [data]);
 
   const handleChange = (e) => {
     setSelectedStudent({
       ...selectedStudent,
-      [e.target.nome]: e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -92,40 +56,80 @@ const CoefTable = () => {
   };
 
   return (
-    <Styles>
+    <div className="container mt-4">
       <h2>Aluno: {nome}</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>DISCIPLINAS</th>
-            <th>PARTICIPAÇÃO</th>
-            <th>FREQUÊNCIA</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index}>
-              <td>{item.disciplina}</td>
-              <td>{item.participacao}</td>
-              <td>{item.frequencia}</td>
+      <div className="table-responsive">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>DISCIPLINAS</th>
+              <th>PARTICIPAÇÃO</th>
+              <th>FREQUÊNCIA</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <Button variant="primary" onClick={() => setModalShow(true)} style={{ marginTop: '20px' }}>
+          </thead>
+          <tbody>
+            {data.map((item, index) => (
+              <tr key={index}>
+                <td>{item.disciplina}</td>
+                <td>{item.participacao}</td>
+                <td>{item.frequencia}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+      <Button variant="primary margin-bottom-15" onClick={() => setModalShow(true)} className="mt-3">
         Adicionar Informação
       </Button>
-      <CoefModal
-        show={modalShow}
-        handleClose={() => setModalShow(false)}
-        handleSave={handleSave}
-        student={selectedStudent}
-        handleChange={handleChange}
-      />
-      <ContentCard>
+      <Modal show={modalShow} onHide={() => setModalShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Informações</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formDisciplina">
+              <Form.Label>Disciplina</Form.Label>
+              <Form.Control
+                type="text"
+                name="disciplina"
+                value={selectedStudent.disciplina}
+                onChange={handleChange}
+                readOnly
+              />
+            </Form.Group>
+            <Form.Group controlId="formParticipacao">
+              <Form.Label>Participação</Form.Label>
+              <Form.Control
+                type="number"
+                name="participacao"
+                value={selectedStudent.participacao}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formFrequencia">
+              <Form.Label>Frequência</Form.Label>
+              <Form.Control
+                type="number"
+                name="frequencia"
+                value={selectedStudent.frequencia}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setModalShow(false)}>
+            Fechar
+          </Button>
+          <Button variant="primary" onClick={handleSave}>
+            Salvar alterações
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <div>
         <CardCoeficiente participacao={participacaoMedia} frequencia={frequenciaMedia} />
-      </ContentCard>
-    </Styles>
+      </div>
+    </div>
   );
 };
 

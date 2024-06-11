@@ -1,29 +1,33 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { Button, Table, Pagination as BSPagination, Form } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
+import axios from 'axios';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
-//style
-
-const Pagination = styled(BSPagination)`
-    
-  .page-item.active .page-link::after {
-    content: "" !important;
-  }
-  .page-item.active .page-link::before {
-    content: "" !important;
-  }
+const StyledButtonE = styled(Button)`
+  /* Estilo para o botão de exclusão */
 `;
 
-//inicio da função
-function StudentTable({ students, setStudents, handleEdit }) {
+const StyledButton = styled(Button)`
+  margin: 5px;
+`;
 
-//recebendo as props dos inputs do modal; lista, atualizar lista e edição da lista
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 20px;
+`;
+
+function StudentTable({ students, setStudents }) {
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [editingStudent, setEditingStudent] = useState(null);
   const studentsPerPage = 10;
+
+  const navigate = useNavigate();
 
   const handleSelect = (index) => {
     const newSelectedStudents = [...selectedStudents];
@@ -51,9 +55,28 @@ function StudentTable({ students, setStudents, handleEdit }) {
       .catch(error => console.error('Erro ao excluir o aluno:', error));
   };
 
-  const handleRowClick = (id, nome) => {
-    navigate(`/tableCoef/${id}`);
-    localStorage.setItem('nomeAluno', nome)
+  const handleRowClick = (studentId) => {
+    navigate(`/tableCoef/${studentId}`);
+  };
+
+  const handleEditClick = (event, student) => {
+    event.stopPropagation(); // Impede a propagação do evento de clique para o contêiner da linha
+    setEditingStudent(student);
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => setShowModal(false);
+
+  const handleModalSave = () => {
+    axios.put(`http://77.37.69.162:5173/students/${editingStudent.id}`, editingStudent)
+      .then(response => {
+        const updatedStudents = students.map(student =>
+          student.id === editingStudent.id ? editingStudent : student
+        );
+        setStudents(updatedStudents);
+        setShowModal(false);
+      })
+      .catch(error => console.error('Erro ao editar o aluno:', error));
   };
 
   const filteredStudents = students.filter(student => student.nome.includes(filter));
@@ -62,12 +85,19 @@ function StudentTable({ students, setStudents, handleEdit }) {
 
   return (
     <div className='row'>
-        <div className='col-lg-12 col-md-12 col-sm-12'>
-          <Button variant="danger" onClick={handleDelete} className='float-right margin-bottom-15'>
-            Excluir selecionados
-          </Button>
-          <Form.Control type="text" placeholder="Filtrar por nome" value={filter} className='margin-bottom-15' onChange={e => setFilter(e.target.value)} />
-          <Table striped bordered hover responsive table="true">
+      <div className='col-lg-12 col-md-12 col-sm-12'>
+        <StyledButtonE variant="btn btn-outline-danger float-right mb-3" onClick={handleDelete}>
+          Excluir selecionados
+        </StyledButtonE>
+        <Form.Control 
+          type="text" 
+          placeholder="Filtrar por nome" 
+          value={filter} 
+          onChange={e => setFilter(e.target.value)} 
+          className='mb-3'
+        />
+        <div className="table-responsive">
+          <table className="table">
             <thead>
               <tr>
                 <th scope="col"></th>
@@ -81,26 +111,94 @@ function StudentTable({ students, setStudents, handleEdit }) {
             </thead>
             <tbody>
               {displayedStudents.map((student, index) => (
-                <tr key={index}>
-                  <td scope="row"><input type="checkbox" checked={selectedStudents.includes(index)} onChange={() => handleSelect(index)} /></td>
-                  <td scope="row">{student.nome}</td>
-                  <td scope="row">{student.idade}</td>
-                  <td scope="row">{student.matricula}</td>
-                  <td scope="row">{student.curso}</td>
-                  <td scope="row">{student.responsavel}</td>
-                  <td scope="row"><Button variant="warning" onClick={() => handleEdit(index)}>Editar</Button></td>
+                <tr key={index} onClick={() => handleRowClick(student.id)}>
+                  <td>
+                    <input type="checkbox" checked={selectedStudents.includes(index)} onChange={() => handleSelect(index)} />
+                  </td>
+                  <td>{student.nome}</td>
+                  <td>{student.idade}</td>
+                  <td>{student.matricula}</td>
+                  <td>{student.curso}</td>
+                  <td>{student.responsavel}</td>
+                  <td>
+                    <StyledButton variant="btn btn-info" onClick={(e) => handleEditClick(e, student)}>Editar</StyledButton>
+                  </td>
                 </tr>
               ))}
             </tbody>
-          </Table>
-          <Pagination>
-            {[...Array(totalPages)].map((_, i) => (
-              <Pagination.Item key={i} active={i + 1 === currentPage} onClick={() => setCurrentPage(i + 1)}>
-                {i + 1}
-              </Pagination.Item>
-            ))}
-          </Pagination>
+          </table>
         </div>
+        <PaginationWrapper>
+          {[...Array(totalPages)].map((_, i) => (
+            <Button
+              key={i}
+              active={i + 1 === currentPage}
+              onClick={() => setCurrentPage(i + 1)}
+            >
+              {i + 1}
+            </Button>
+          ))}
+        </PaginationWrapper>
+
+        {/* Modal de Edição */}
+        <Modal show={showModal} onHide={handleModalClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Editar Estudante</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3" controlId="formNome">
+                <Form.Label>Nome</Form.Label>
+                <Form.Control 
+                  type="text" 
+                  value={editingStudent?.nome || ''} 
+                  onChange={(e) => setEditingStudent({ ...editingStudent, nome: e.target.value })} 
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formIdade">
+                <Form.Label>Idade</Form.Label>
+                <Form.Control 
+                  type="number" 
+                  value={editingStudent?.idade || ''} 
+                  onChange={(e) => setEditingStudent({ ...editingStudent, idade: e.target.value })} 
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formMatricula">
+                <Form.Label>Matrícula</Form.Label>
+                <Form.Control 
+                  type="text" 
+                  value={editingStudent?.matricula || ''} 
+                  onChange={(e) => setEditingStudent({ ...editingStudent, matricula: e.target.value })} 
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formCurso">
+                <Form.Label>Curso</Form.Label>
+                <Form.Control 
+                  type="text" 
+                  value={editingStudent?.curso || ''} 
+                  onChange={(e) => setEditingStudent({ ...editingStudent, curso: e.target.value })} 
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formResponsavel">
+                <Form.Label>Responsável</Form.Label>
+                <Form.Control 
+                  type="text" 
+                  value={editingStudent?.responsavel || ''} 
+                  onChange={(e) => setEditingStudent({ ...editingStudent, responsavel: e.target.value })} 
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleModalClose}>
+              Cancelar
+            </Button>
+            <Button variant="primary" onClick={handleModalSave}>
+              Salvar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     </div>
   );
 }
