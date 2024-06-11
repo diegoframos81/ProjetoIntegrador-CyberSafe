@@ -1,66 +1,29 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
-import axios from 'axios';
+import { Button, Table, Pagination as BSPagination, Form } from 'react-bootstrap';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 18px;
-  text-align: left;
+//style
 
-  thead {
-    background-color: #f2f2f2;
+const Pagination = styled(BSPagination)`
+    
+  .page-item.active .page-link::after {
+    content: "" !important;
   }
-
-  td input[type=checkbox], input[type=radio] {
-    cursor: pointer;
-  }
-  td {
-    cursor: pointer;
-  }
-
-  th, td {
-    padding: 12px;
-    border: 1px solid #ddd;
-  }
-
-  tbody tr:nth-of-type(even) {
-    background-color: #f9f9f9;
-  }
-
-  tbody tr:hover {
-    background-color: #f1f1f1;
+  .page-item.active .page-link::before {
+    content: "" !important;
   }
 `;
 
-const StyledButtonE = styled(Button)`
-  position: relative;
-  top: -6rem;
-  left: 57rem;
-`;
-
-const StyledButton = styled(Button)`
-  margin: 5px;
-`;
-
-const PaginationWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  gap: 20px;
-`;
-
+//inicio da função
 function StudentTable({ students, setStudents, handleEdit }) {
+
+//recebendo as props dos inputs do modal; lista, atualizar lista e edição da lista
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState('');
   const studentsPerPage = 10;
-  const navigate = useNavigate();
 
   const handleSelect = (index) => {
     const newSelectedStudents = [...selectedStudents];
@@ -98,48 +61,46 @@ function StudentTable({ students, setStudents, handleEdit }) {
   const displayedStudents = filteredStudents.slice((currentPage - 1) * studentsPerPage, currentPage * studentsPerPage);
 
   return (
-    <div>
-      <Form.Control type="text" placeholder="Filtrar por nome" value={filter} onChange={e => setFilter(e.target.value)} />
-      <StyledButtonE variant="btn btn-outline-danger" onClick={handleDelete}>
-        Excluir selecionados
-      </StyledButtonE>
-      <StyledTable>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Nome</th>
-            <th>Idade</th>
-            <th>Matricula</th>
-            <th>Curso</th>
-            <th>Responsável</th>
-            <th>Editar</th>
-          </tr>
-        </thead>
-        <tbody>
-          {displayedStudents.map((student, index) => (
-            <tr key={index} onClick={() => handleRowClick(student.id, student.nome)}>
-              <td><input type="checkbox" checked={selectedStudents.includes(index)} onChange={() => handleSelect(index)} /></td>
-              <td>{student.nome}</td>
-              <td>{student.idade}</td>
-              <td>{student.matricula}</td>
-              <td>{student.curso}</td>
-              <td>{student.responsavel}</td>
-              <td><StyledButton variant="btn btn-info" onClick={() => handleEdit(index)}>Editar</StyledButton></td>
-            </tr>
-          ))}
-        </tbody>
-      </StyledTable>
-      <PaginationWrapper>
-        {[...Array(totalPages)].map((_, i) => (
-          <Button
-            key={i}
-            active={i + 1 === currentPage}
-            onClick={() => setCurrentPage(i + 1)}
-          >
-            {i + 1}
+    <div className='row'>
+        <div className='col-lg-12 col-md-12 col-sm-12'>
+          <Button variant="danger" onClick={handleDelete} className='float-right margin-bottom-15'>
+            Excluir selecionados
           </Button>
-        ))}
-      </PaginationWrapper>
+          <Form.Control type="text" placeholder="Filtrar por nome" value={filter} className='margin-bottom-15' onChange={e => setFilter(e.target.value)} />
+          <Table striped bordered hover responsive table="true">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Nome</th>
+                <th scope="col">Idade</th>
+                <th scope="col">Matricula</th>
+                <th scope="col">Curso</th>
+                <th scope="col">Responsável</th>
+                <th scope="col">Editar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {displayedStudents.map((student, index) => (
+                <tr key={index}>
+                  <td scope="row"><input type="checkbox" checked={selectedStudents.includes(index)} onChange={() => handleSelect(index)} /></td>
+                  <td scope="row">{student.nome}</td>
+                  <td scope="row">{student.idade}</td>
+                  <td scope="row">{student.matricula}</td>
+                  <td scope="row">{student.curso}</td>
+                  <td scope="row">{student.responsavel}</td>
+                  <td scope="row"><Button variant="warning" onClick={() => handleEdit(index)}>Editar</Button></td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <Pagination>
+            {[...Array(totalPages)].map((_, i) => (
+              <Pagination.Item key={i} active={i + 1 === currentPage} onClick={() => setCurrentPage(i + 1)}>
+                {i + 1}
+              </Pagination.Item>
+            ))}
+          </Pagination>
+        </div>
     </div>
   );
 }
