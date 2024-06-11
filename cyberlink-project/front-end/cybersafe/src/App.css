@@ -25,3 +25,19 @@ body {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+
+.float-right{
+  float: right;
+}
+
+.float-left{
+  float: left;
+}
+
+.margin-bottom-15{
+  margin-bottom: 15px;
+}
+
+.margin-left-30{
+  margin-left: 30px;
+}

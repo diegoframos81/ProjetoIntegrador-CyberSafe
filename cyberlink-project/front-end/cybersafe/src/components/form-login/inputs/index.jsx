@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import StyledInput from './style';
 
-const Input = ({ type, placeholder }) => {
-    return <StyledInput type={type} placeholder={placeholder} />;
+const Input = ({ type, placeholder, className }) => {
+    return <StyledInput type={type} placeholder={placeholder} className={className} />;
 };
 
 Input.propTypes = {

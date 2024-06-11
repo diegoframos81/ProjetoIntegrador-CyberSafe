@@ -5,11 +5,6 @@ import DataTable from './../../components/table-adm/index';
 import styled from "styled-components";
 
 const ContentCard = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
 `;
 
 function LayoutTable() {
@@ -17,9 +12,15 @@ function LayoutTable() {
     <>
         <Navbar />
         <ContentCard>
-          <CardContainer>
-            <DataTable />
-          </CardContainer>
+          <div className='container'> 
+            <div className='row align-items-center'>
+              <div className='col-lg-12'>
+                <CardContainer>
+                  <DataTable />
+                </CardContainer>
+              </div>
+            </div>
+          </div>
         </ContentCard>
     </>
   )
