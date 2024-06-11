@@ -1,15 +1,20 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Card = styled.div`
-  height: 15rem;
+  height: auto;
   position: relative;
-  top: -17rem;
-  left: 43rem;
   background-color: #c7e4ff;
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+
+  @media (max-width: 768px) {
+    max-width: none;
+    width: 100%;
+  }
 `;
 
 const Header = styled.div`
@@ -21,26 +26,31 @@ const Header = styled.div`
 `;
 
 const Section = styled.div`
-  width: 300px;
+  width: 100%;
   background-color: #7895CB;
   padding: 10px;
-  margin-right: 30px;
-  margin-left: -20px;
   font-weight: bold;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
   color: #FFFFFF;
+  margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    justify-content: space-between;
+  }
 `;
 
 const Notas = styled.div`
-  width: 300px;
+  width: 100%;
   display: flex;
   flex-flow: row wrap;
   padding: 12px;
-  margin-right: 30px;
-  margin-left: -25px;
   justify-content: space-around;
+
+  @media (max-width: 768px) {
+    justify-content: space-between;
+  }
 `;
 
 const CardNotas = () => (
@@ -51,12 +61,9 @@ const CardNotas = () => (
     </Header>
     <Section>
       <div>AV1</div>
-
       <div>AV2</div>
-
       <div>MÉDIA</div>
     </Section>
-
     <Notas>
       <p>7.5</p>
       <p>7.5</p>

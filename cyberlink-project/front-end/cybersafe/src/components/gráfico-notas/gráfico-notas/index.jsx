@@ -58,7 +58,7 @@ function ChartComponent() {
   }, []);
 
   return (
-    <div id="chartdiv" style={{ width: "50%", height: "300px" }}></div>
+    <div id="chartdiv" style={{ width: "90%", height: "300px" }}></div>
   );
 }
 

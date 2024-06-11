@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run dev\" \"npm run build\"",
-    "server": "json-server --watch db.json --port 5173 --host 77.37.69.162",
-    "dev": "vite --host 0.0.0.0",
+    "server": "json-server --watch db.json --port 5173 --host 0.0.0.0",
+    "dev": "vite --port 5174 --host 0.0.0.0",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"

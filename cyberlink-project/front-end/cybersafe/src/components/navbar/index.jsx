@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { useLocation, useNavigate, matchPath } from "react-router-dom";
+import { useLocation, useNavigate, matchPath,  Link  } from "react-router-dom";
 import styled from 'styled-components';
 import LogoIcon from '../../assets/Logo/LogoCyberSafe-removebg-preview.png';
 import Sino from '../../assets/Image/Sino Notificação.svg';
@@ -97,7 +97,9 @@ const NavbarLink = styled.a`
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const handleConsultaClick = () => {
+    navigate('/professionalList');
+  };
   const isAdmRoute = location.pathname === '/homeAdm' || matchPath("/tableCoef/:id", location.pathname);
 
   return (
@@ -117,7 +119,7 @@ const Navbar = () => {
             <NavbarLink href="" onClick={() => navigate(isAdmRoute ? "/tableCoef/:id" : "/frequencia")} className="nav-link">
               {isAdmRoute ? "COEFICIENTE" : "FREQUÊNCIA"}
             </NavbarLink>
-            <NavbarLink href="" className="nav-link">SOBRE</NavbarLink>
+            <NavbarLink href="" className="nav-link" onClick={handleConsultaClick}>CONSULTA</NavbarLink>
             {!isAdmRoute && <NavbarLink href="" className="nav-link"><img src={Sino} alt="notification" /></NavbarLink>}
             {!isAdmRoute && <NavbarLink href="" className="nav-link"><img src={Email} alt="email" /></NavbarLink>}
           </DirNavBar>

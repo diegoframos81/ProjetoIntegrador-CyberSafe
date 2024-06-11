@@ -8,6 +8,7 @@ import Details from '../pages/details/index';
 import Frequencia from '../pages/faltas';
 import HomeAdm from '../pages/home-page-adm';
 import CoefTable from '../pages/coef-table/index';
+import ProfessionalList from '../pages/ListProf/index';
 
 const RoutesApp = () => {
   return (
@@ -18,7 +19,8 @@ const RoutesApp = () => {
       <Route path="/details" element={<Details />} />
       <Route path="/frequencia" element={<Frequencia />} />
       <Route path="/homeAdm" element={<HomeAdm />} />
-      <Route path="/tableCoef/:id" element={<CoefTable />} /> 
+      <Route path="/tableCoef/:id" element={<CoefTable />} />
+      <Route path="/professionalList" element={<ProfessionalList />} />
     </Routes>
   );
 };

@@ -1,20 +1,12 @@
 /* eslint-disable no-unused-vars */
-
-
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from "../../components/navbar";
 import ChartComponent from '../../components/gráfico-notas/gráfico/index';
-import CardContainer from '../../components/card-disciplinas/card-container/index';
+
 import CardNotas from '../../components/card-notas/index';
 import CardCoeficiente from "../../components/card-coef";
-import { useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-import { ContainerDetails } from './style'
-
-
-const StyledCardContainer = styled(CardContainer)`
-  height: 60vh; // Define a altura desejada em 80% da altura da tela
-`;
+import { ContainerDetails, StyledCardContainer } from './style';
 
 const DetailsPage = () => {
   const location = useLocation();
@@ -39,14 +31,14 @@ const DetailsPage = () => {
     <>
       <Navbar />
       <ContainerDetails>
-      <StyledCardContainer>
-        <ChartComponent />
-        <CardNotas />
-        <CardCoeficiente participacao={participacaoMedia} frequencia={frequenciaMedia} />
-      </StyledCardContainer >
+        <StyledCardContainer>
+          <ChartComponent />
+          <CardNotas />
+          <CardCoeficiente participacao={participacaoMedia} frequencia={frequenciaMedia} />
+        </StyledCardContainer>
       </ContainerDetails>
     </>
-  )
-}
+  );
+};
 
 export default DetailsPage;
