@@ -7,9 +7,8 @@ import styled from 'styled-components';
 import StudentModal from './modal-student/index';
 import StudentTable from './table-student/index';
 
-const AddButton = styled(Button)`
-  margin-bottom: 20px;
-`;
+const AddButton = styled(Button)``;
+
 
 function DataTable() {
   const [show, setShow] = useState(false);
@@ -60,26 +59,34 @@ function DataTable() {
   };
 
   return (
-    <div className="App">
-      <AddButton variant="btn btn-outline-primary" onClick={handleShow}>
-        + Alunos
-      </AddButton>
-
-      <StudentModal
-        show={show}
-        handleClose={handleClose}
-        handleSave={handleSave}
-        student={student}
-        setStudent={setStudent}
-        multiAdd={multiAdd}
-        setMultiAdd={setMultiAdd}
-      />
-
-      <StudentTable
-        students={students}
-        setStudents={setStudents}
-        handleEdit={handleEdit}
-      />
+    <div className="row">
+      <div className='col-lg-12 col-md-12 col-sm-12'>
+        <div className='row'> 
+          <div className='col-lg-12 col-md-12 col-sm-12'>
+            <AddButton variant="btn btn-outline-primary" onClick={handleShow}>
+              + Alunos
+            </AddButton>
+          </div>
+        </div>
+        <StudentModal
+          show={show}
+          handleClose={handleClose}
+          handleSave={handleSave}
+          student={student}
+          setStudent={setStudent}
+          multiAdd={multiAdd}
+          setMultiAdd={setMultiAdd}
+        />
+        <div className='row'> 
+          <div className='col-lg-12 col-md-12 col-sm-12'> 
+            <StudentTable
+              students={students}
+              setStudents={setStudents}
+              handleEdit={handleEdit}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
